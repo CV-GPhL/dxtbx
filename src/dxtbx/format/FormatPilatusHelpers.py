@@ -144,8 +144,10 @@ def determine_pilatus_mask(xdetector):
 
     size = xdetector[0].get_image_size()
 
-    # Hardcoded module size and gap size
-    detector = _DetectorDatabase["Pilatus"]
+    # get detector class based on size (an image might look like a Pilatus
+    # image, but could be Eiger or Eiger2 after all: the size usually tells
+    # us exactly which it is)
+    detector = _get_pad_module_gap(xdetector)
 
     # Edge dead areas not included, only gaps between modules matter
     n_fast, remainder = divmod(size[0], detector.module_size_fast)
